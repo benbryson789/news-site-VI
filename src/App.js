@@ -1,48 +1,69 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import React,{useState}  from 'react';
 import './App.css';
-import AppNav from './components/AppNav/AppNav.js';
-import HomePage from './pages/HomePage.js';
-import LoginPage from './pages/LoginPage.js';
-import AddArticlePage from './pages/AddArticlePage.js';
-import ArticlePage from './pages/ArticlePage.js';
-import SectionPage from './pages/SectionPage.js';
-
-class App extends Component {
-  render() {
+import { BrowserRouter as Router, Route, useHistory, } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import ArticlePage from './pages/ArticlePage';
+import SectionPage from './pages/SectionPage';
+import { Redirect } from 'react-router';
+import LoginPage from './pages/LoginPage';
+import AddArticlePage from './pages/AddArticlePage';
+import UserContext from './contexts/UserContext';
+import AppNav  from './components/AppNav/AppNav';
+export const  RenderLoginPage = (props) => {
+  return (
+    <LoginPage
+        userState ={props.userState}
+        handleLogin={props.handleLogin} />
+  )
+}
+const RenderLogout = (props) => {
+  props.setUserState({ user: null })
+  return (
+    <Redirect to="/login" />
+  )
+}
+const  App = () => {
+  const[userState,setUserState]= useState({user:null});
+  const history = useHistory();
+const handleLogin = (user) => {
+  setUserState({
+      user: user
+    })
+   
+  }
+  console.log('userState',userState);
     return (
-      <div>
+      <div className="container">
+        <div className="row">
+      <div className="col-md-12">
+      
         <Router>
           <div>
-            <AppNav />
-            <Route exact path="/" component={HomePage} />
-            <Route exact path="/login" component={LoginPage} />
-            <Route exact path="/add-article" component={AddArticlePage} />
-            <Route exact path="/articles/:articleID" component={ArticlePage} />
-            <Route exact path="/sections/:sectionID" component={SectionPage} />
+            <Route exact path="/" >
+              <HomePage userState= {userState}/>
+              </Route>
+            <Route exact path="/login" >
+              <RenderLoginPage userState={userState} handleLogin={handleLogin}/>
+              </Route>
+            <Route exact path="/logout" >
+            <RenderLogout setUserState= {setUserState}/>
+            </Route>
+            <Route exact path="/add-article" >
+                <AddArticlePage userState= {userState}/>
+            </Route>
+            <Route exact path="/articles/:articleID" >
+            <ArticlePage userState= {userState}/>
+            </Route>
+            <Route exact path="/sections/:sectionID">
+            <SectionPage userState= {userState}/>
+            </Route>
           </div>
         </Router>
       </div>
+      </div>
+      </div>
     );
-  }
+
 }
 
 export default App;
-
-
-// Functional solution:
-// function App() {
-//   return (
-//     <div>
-//       <AppNav />
-//       <Router>
-//         <div>
-//           <Route exact path="/" component={HomePage} />
-//           <Route exact path="/add-article" component={AddArticlePage} />
-//           <Route exact path="/articles/:articleID" component={ArticlePage} />
-//           <Route exact path="/sections/:sectionID" component={SectionPage} />
-//         </div>
-//       </Router>
-//     </div>
-//   );
-// }

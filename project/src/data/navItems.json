@@ -1,0 +1,30 @@
+[
+  {
+    "label": "HOME",
+    "value": ""
+  },
+  {
+    "label": "LOGIN",
+    "value": "login"
+  },
+  {
+    "label": "ADD AN ARTICLE",
+    "value": "add-article"
+  },
+  {
+    "label": "OPINION",
+    "value": "sections/opinion"
+  },
+  {
+    "label": "WORLD",
+    "value": "sections/world"
+  },
+  {
+    "label": "NATIONAL",
+    "value": "sections/national"
+  },
+  {
+    "label": "POLITICS",
+    "value": "sections/politics"
+  }
+]

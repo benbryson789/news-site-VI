@@ -1,44 +1,51 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Navbar, NavItem } from 'reactstrap';
-import navItems from '../../config/Sections.json';
-
-class AppNav extends Component {
-  render() {
+import React, { useState } from 'react';
+import { useHistory,withRouter } from 'react-router-dom';
+const   AppNav = ({userState}) =>{
+  const history = useHistory();
     return (
-      <Navbar color="light">
-        {navItems.map((navItem) =>
-          <NavItem>
-            <Link to={`/sections/${navItem.value}`} >
-              { navItem.label }
-            </Link>
-          </NavItem>
-        )}
-        <NavItem>
-          <Link to="/add-article">Add an Article</Link>
-        </NavItem>
-      </Navbar>
-    )
-  }
+      <div>
+           {userState.user === null &&
+          <a href="/" onClick={(e) => {
+              e.preventDefault();
+              history.push("/login");
+          }} >
+          Login
+      </a> 
+          
+        }
+      {userState.user !== null &&
+     <> <a href="/" onClick={(e) => {
+        e.preventDefault();
+        history.push("/add-article");
+    }} >
+    Ad An Article
+</a> 
+&nbsp;
+      <a href="/" onClick={(e) => {
+             e.preventDefault();
+              history.push("/logout");
+          }} >
+          Logout 
+      </a> </>
 }
+      <hr/>
+    </div>
+    )
+        
+};
 
-export default AppNav;
+export default (AppNav);
 
 
 // Functional solution:
-// function AppNav() {
+// function AppNav({ navItems, handleNavClick }) {
 //   return (
-//     <Navbar color="light">
+//     <nav>
 //       {navItems.map((navItem) =>
-//         <NavItem>
-//           <Link to={`/sections/${navItem.value}`} >
-//             {navItem.label}
-//           </Link>
-//         </NavItem>
+//         <a href="#" onClick={() => handleNavClick(navItem.value)} >
+//           {navItem.label} |
+//         </a>
 //       )}
-//       <NavItem>
-//         <Link to="/add-article">Add an Article</Link>
-//       </NavItem>
-//     </Navbar>
+//     </nav>
 //   );
 // }
